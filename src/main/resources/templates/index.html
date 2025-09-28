@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Finder</title>
+    <style>
+        table { border-collapse: collapse; width: 80%; margin-top: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Restaurant Finder</h1>
+
+    <form action="/search" method="post">
+        <input type="text" name="city" placeholder="Enter city name" required
+               th:value="${city}">
+        <button type="submit">Search</button>
+    </form>
+
+    <div th:if="${error}">
+        <p class="error" th:text="${error}"></p>
+    </div>
+
+    <div th:if="${restaurants != null}">
+        <h2 th:text="'Restaurants in ' + ${city}">Results:</h2>
+
+        <div th:if="${#lists.isEmpty(restaurants)}">
+            <p>No restaurants found.</p>
+        </div>
+
+        <table th:if="${!#lists.isEmpty(restaurants)}">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Rating</th>
+            </tr>
+            <tr th:each="restaurant : ${restaurants}">
+                <td th:text="${restaurant.name}"></td>
+                <td th:text="${restaurant.address}"></td>
+                <td th:text="${restaurant.rating}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
